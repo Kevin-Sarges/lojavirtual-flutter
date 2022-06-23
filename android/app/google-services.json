@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "202601689438",
+    "project_id": "k3loja-7c235",
+    "storage_bucket": "k3loja-7c235.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202601689438:android:6928d1149aa480426b9fcf",
+        "android_client_info": {
+          "package_name": "br.com.k3loja.k3loja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202601689438-ppb22js54psn07ngqn0l15tuk2cbq2dv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByIKD62FVEjOFTW7Q82zdswcd0dlPUpW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202601689438-ppb22js54psn07ngqn0l15tuk2cbq2dv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
