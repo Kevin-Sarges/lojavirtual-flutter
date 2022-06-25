@@ -63,7 +63,25 @@ class HomeTab extends StatelessWidget {
                     if (snapshot.hasError) {
                       return Container();
                     } else {
-                      return createTaleHome(context, snapshot);
+                      return SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 200.0,
+                          crossAxisSpacing: 1,
+                          mainAxisSpacing: 1,
+                          childAspectRatio: 2,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image:
+                                  'https://images.pexels.com/photos/1311590/pexels-photo-1311590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
+                      );
                     }
                 }
               },
@@ -72,44 +90,5 @@ class HomeTab extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Widget createTaleHome(BuildContext context, AsyncSnapshot snapshot) {
-    return SliverGrid.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 1,
-      crossAxisSpacing: 1,
-      children: [
-        StaggeredGridTile.count(
-          crossAxisCellCount: 2,
-          mainAxisCellCount: 1,
-          child: FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image:
-                'https://images.pexels.com/photos/1311590/pexels-photo-1311590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-            fit: BoxFit.cover,
-          ),
-        ),
-      ],
-    );
-    // return SliverGrid(
-    //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-    //     maxCrossAxisExtent: 200.0,
-    //     crossAxisSpacing: 1,
-    //     mainAxisSpacing: 1,
-    //     childAspectRatio: 2,
-    //   ),
-    //   delegate: SliverChildBuilderDelegate(
-    //     (context, index) {
-    //       print(snapshot.data['image'].toString());
-
-    //       return FadeInImage.memoryNetwork(
-    //         placeholder: kTransparentImage,
-    //         image: 'https://images.pexels.com/photos/1311590/pexels-photo-1311590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    //         fit: BoxFit.cover,
-    //       );
-    //     },
-    //   ),
-    // );
   }
 }
