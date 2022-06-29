@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -6,7 +8,7 @@ import 'package:transparent_image/transparent_image.dart';
 class HomeTab extends StatelessWidget {
   HomeTab({Key? key}) : super(key: key);
 
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   final Widget _buildBodyBack = Container(
     decoration: const BoxDecoration(
@@ -21,10 +23,8 @@ class HomeTab extends StatelessWidget {
     ),
   );
 
-  Future<QuerySnapshot> getImageHome() async {
-    final getData = db.collection('home').orderBy('pos').get();
-
-    return getData;
+  Future<QuerySnapshot> getImageHome() {
+    return db.collection('home').orderBy('pos').get();
   }
 
   @override
@@ -63,23 +63,30 @@ class HomeTab extends StatelessWidget {
                     if (snapshot.hasError) {
                       return Container();
                     } else {
-                      return SliverGrid(
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200.0,
-                          crossAxisSpacing: 1,
-                          mainAxisSpacing: 1,
-                          childAspectRatio: 2,
-                        ),
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return FadeInImage.memoryNetwork(
+                      return SliverToBoxAdapter(
+                        child: GridView.custom(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverQuiltedGridDelegate(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 1,
+                            crossAxisSpacing: 1,
+                            repeatPattern: QuiltedGridRepeatPattern.inverted,
+                            pattern: snapshot.data!.docs.map((e) {
+                              return QuiltedGridTile(
+                                e['x'],
+                                e['y'],
+                              );
+                            }).toList(),
+                          ),
+                          childrenDelegate: SliverChildBuilderDelegate(
+                            (context, index) => FadeInImage.memoryNetwork(
                               placeholder: kTransparentImage,
-                              image:
-                                  'https://images.pexels.com/photos/1311590/pexels-photo-1311590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                              image: snapshot.data!.docs[index]['image'],
                               fit: BoxFit.cover,
-                            );
-                          },
+                            ),
+                            childCount: snapshot.data!.docs.length,
+                          ),
                         ),
                       );
                     }

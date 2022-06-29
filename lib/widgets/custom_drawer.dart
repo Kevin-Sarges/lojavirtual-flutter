@@ -1,0 +1,54 @@
+import 'package:flutter/material.dart';
+
+class CustomeDrawer extends StatelessWidget {
+  CustomeDrawer({Key? key}) : super(key: key);
+
+  final Widget _buildDrawerBack = Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 203, 236, 241),
+          Colors.white,
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Stack(
+        children: [
+          _buildDrawerBack,
+          ListView(
+            padding: const EdgeInsets.only(left: 23, top: 16),
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.fromLTRB(0, 16, 16, 8),
+                height: 170,
+                child: Stack(
+                  children: const [
+                    Positioned(
+                      top: 8,
+                      left: 0,
+                      child: Text(
+                        'Loja\nVirtual',
+                        style: TextStyle(
+                          fontSize: 34,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}

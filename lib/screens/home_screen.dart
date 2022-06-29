@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../tabs/home_tabs.dart';
+import '../widgets/custom_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -13,7 +14,10 @@ class HomeScreen extends StatelessWidget {
       controller: _pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        HomeTab(),
+        Scaffold(
+          body: HomeTab(),
+          drawer: CustomeDrawer(),
+        )
       ],
     );
   }
