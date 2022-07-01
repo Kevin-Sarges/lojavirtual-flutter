@@ -22,20 +22,12 @@ class ProductModel {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
 
     return ProductModel(
-      // id: snapshot.id,
-      // title: data['title'],
-      // description: data['description'],
-      // price: data['price'],
-      // images: data['images'],
-      // sizes: data['images'],
-      title: data.toString().contains('title') ? snapshot.get('title') : '',
-      description: data.toString().contains('description')
-          ? snapshot.get('description')
-          : '',
-      price:
-          data.toString().contains('price') ? snapshot.get('price') + 0.0 : 0,
+      id: snapshot.id,
+      title: data['title'] ?? '',
+      description: data['description'] ?? '',
+      price: data['price'] ?? 0,
       images: data['images'] is Iterable ? List.from(data['images']) : [],
-      sizes: data.toString().contains('sizes') ? snapshot.get('sizes') : [],
+      sizes: data['sizes'] is Iterable ? List.from(data['sizes']) : [],
     );
   }
 }

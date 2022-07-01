@@ -20,7 +20,7 @@ class ProductTile extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 0.8,
                     child: Image.network(
-                      product.images?[0],
+                      product.images![0],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -49,7 +49,40 @@ class ProductTile extends StatelessWidget {
                   ),
                 ],
               )
-            : Row(),
+            : Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Image.network(
+                      product.images![0],
+                      fit: BoxFit.cover,
+                      height: 200,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.title.toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'R\$ ${product.price!.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
       ),
     );
   }
