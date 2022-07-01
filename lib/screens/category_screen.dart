@@ -73,6 +73,7 @@ class CategoryScreen extends StatelessWidget {
                       ),
                       ListView.builder(
                         padding: const EdgeInsets.all(4),
+                        itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           return ProductTile(
                             typeList: 'list',
