@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:k3loja/screens/login_screen.dart';
 
 import '../tales/drawer_tiles.dart';
 
@@ -68,7 +69,13 @@ class CustomeDrawer extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
