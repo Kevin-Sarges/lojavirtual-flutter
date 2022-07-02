@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:k3loja/model/products_model.dart';
+import 'package:k3loja/models/products_model.dart';
 import 'package:k3loja/tales/product_tile.dart';
 
 class CategoryScreen extends StatelessWidget {

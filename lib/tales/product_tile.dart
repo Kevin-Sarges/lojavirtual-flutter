@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k3loja/model/products_model.dart';
+import 'package:k3loja/models/products_model.dart';
 
 import '../screens/product_screen.dart';
 

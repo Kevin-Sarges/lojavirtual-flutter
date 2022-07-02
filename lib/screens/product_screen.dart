@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:k3loja/model/products_model.dart';
+import 'package:k3loja/models/products_model.dart';
 
 class ProductScreen extends StatefulWidget {
   final ProductModel product;
