@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:k3loja/model/products_model.dart';
 
+import '../screens/product_screen.dart';
+
 class ProductTile extends StatelessWidget {
   final String typeList;
   final ProductModel product;
@@ -11,6 +13,15 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(
+              product: product,
+            ),
+          ),
+        );
+      },
       child: Card(
         child: typeList == 'grid'
             ? Column(
@@ -20,7 +31,7 @@ class ProductTile extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 0.8,
                     child: Image.network(
-                      product.images![0],
+                      product.images![1],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -54,7 +65,7 @@ class ProductTile extends StatelessWidget {
                   Flexible(
                     flex: 1,
                     child: Image.network(
-                      product.images![0],
+                      product.images![1],
                       fit: BoxFit.cover,
                       height: 200,
                     ),
