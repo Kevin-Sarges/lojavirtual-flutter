@@ -11,6 +11,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).primaryColor;
+
     return PageView(
       controller: _pageController,
       physics: const NeverScrollableScrollPhysics(),
@@ -23,12 +25,17 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Categorias'),
             centerTitle: true,
+            backgroundColor: primaryColor,
           ),
           drawer: CustomeDrawer(pageController: _pageController),
           body: ProductsTab(),
         ),
-        Container(color: Colors.green,),
-        Container(color: Colors.blue,),
+        Container(
+          color: Colors.green,
+        ),
+        Container(
+          color: Colors.blue,
+        ),
       ],
     );
   }

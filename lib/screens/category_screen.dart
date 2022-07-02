@@ -14,12 +14,15 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).primaryColor;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text(snapshot.get('title')),
           centerTitle: true,
+          backgroundColor: primaryColor,
           bottom: const TabBar(
             indicatorColor: Colors.white,
             tabs: [
