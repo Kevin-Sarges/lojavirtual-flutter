@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '202601689438',
     projectId: 'k3loja-7c235',
     storageBucket: 'k3loja-7c235.appspot.com',
-    iosClientId: '202601689438-u5htg8q0ep39dp733qoklb4t2e5rkstc.apps.googleusercontent.com',
+    iosClientId:
+        '202601689438-u5htg8q0ep39dp733qoklb4t2e5rkstc.apps.googleusercontent.com',
     iosBundleId: 'br.com.k3loja.k3loja',
   );
 }

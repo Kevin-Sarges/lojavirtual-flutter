@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:k3loja/screens/login_screen.dart';
 
 import '../tales/drawer_tiles.dart';
 
@@ -52,31 +51,31 @@ class CustomeDrawer extends StatelessWidget {
                       bottom: 0,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
+                        children: const [
+                          Text(
                             'Olá,',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          GestureDetector(
-                            child: Text(
-                              'Entre ou Cadastre-se >',
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ),
-                              );
-                            },
-                          ),
+                          // GestureDetector(
+                          //   child: Text(
+                          //     'Entre ou Cadastre-se >',
+                          //     style: TextStyle(
+                          //       color: Theme.of(context).primaryColor,
+                          //       fontSize: 16,
+                          //       fontWeight: FontWeight.bold,
+                          //     ),
+                          //   ),
+                          //   onTap: () {
+                          //     Navigator.of(context).push(
+                          //       MaterialPageRoute(
+                          //         builder: (context) => LoginScreen(),
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
