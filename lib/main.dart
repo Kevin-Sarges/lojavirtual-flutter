@@ -40,16 +40,19 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromARGB(255, 4, 125, 141),
       ),
       debugShowCheckedModeBanner: false,
-      home: MultiProvider(providers: [
-        ChangeNotifierProvider<AuthProvider>(
-          create: (_) => AuthProvider(
-            googleSignIn: GoogleSignIn(),
-            firebaseAuth: FirebaseAuth.instance,
-            firebaseFirestore: firebaseFirestore,
-            preferences: preferences,
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AuthProvider>(
+            create: (_) => AuthProvider(
+              googleSignIn: GoogleSignIn(),
+              firebaseAuth: FirebaseAuth.instance,
+              firebaseFirestore: firebaseFirestore,
+              preferences: preferences,
+            ),
           ),
-        )
-      ], child: HomeScreen()),
+        ],
+        child: HomeScreen(),
+      ),
     );
   }
 }
