@@ -1,3 +1,5 @@
+import 'package:k3loja/screens/login_screen.dart';
+
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +52,7 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color.fromARGB(255, 4, 125, 141),
         ),
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: const LoginScreen(),
       ),
     );
   }

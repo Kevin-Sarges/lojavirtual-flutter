@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:k3loja/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../tales/drawer_tiles.dart';
 
@@ -22,6 +24,10 @@ class CustomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final String nameUser =
+        authProvider.googleSignIn.currentUser!.displayName.toString();
+
     return Drawer(
       child: Stack(
         children: [
@@ -51,31 +57,22 @@ class CustomeDrawer extends StatelessWidget {
                       bottom: 0,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Olá,',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          // GestureDetector(
-                          //   child: Text(
-                          //     'Entre ou Cadastre-se >',
-                          //     style: TextStyle(
-                          //       color: Theme.of(context).primaryColor,
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          //   onTap: () {
-                          //     Navigator.of(context).push(
-                          //       MaterialPageRoute(
-                          //         builder: (context) => LoginScreen(),
-                          //       ),
-                          //     );
-                          //   },
-                          // ),
+                          Text(
+                            nameUser,
+                            style: const TextStyle(
+                              color: Color(0xFF047D8D),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ),
