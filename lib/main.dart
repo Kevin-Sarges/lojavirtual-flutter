@@ -1,18 +1,13 @@
 import 'package:k3loja/screens/login_screen.dart';
-
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:k3loja/screens/home_screen.dart';
 import 'package:k3loja/providers/auth_provider.dart';
 
 void main() async {
