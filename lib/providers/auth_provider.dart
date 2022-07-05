@@ -39,7 +39,7 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> isLoggerIn() async {
     bool isLoggerIn = await googleSignIn.isSignedIn();
 
-    if (isLoaging && preferences.getString('id')?.isNotEmpty == true) {
+    if (isLoggerIn && preferences.getString('id')?.isNotEmpty == true) {
       return true;
     } else {
       return false;

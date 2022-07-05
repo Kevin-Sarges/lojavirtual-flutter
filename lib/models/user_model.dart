@@ -1,7 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-class UserModel {
+class UserModel extends Equatable {
   late String id;
   late String name;
   late String password;
