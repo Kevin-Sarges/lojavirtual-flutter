@@ -30,4 +30,12 @@ class ProductModel {
       sizes: data['sizes'] is Iterable ? List.from(data['sizes']) : [],
     );
   }
+
+  Map<String, dynamic> toResumeMap() {
+    return {
+      "title": title,
+      "description": description,
+      "price": price,
+    };
+  }
 }

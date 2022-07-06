@@ -1,3 +1,6 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:k3loja/providers/cart_provider.dart';
 import 'package:k3loja/screens/login_screen.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +29,7 @@ class MyApp extends StatelessWidget {
   final SharedPreferences preferences;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+  late User? firebaseUser;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,11 @@ class MyApp extends StatelessWidget {
             preferences: preferences,
           ),
         ),
+        ChangeNotifierProvider<CartProvider>(
+          create: (_) => CartProvider(
+            firebaseUser: firebaseUser,
+          ),
+        )
       ],
       child: MaterialApp(
         title: 'Loja demo',
