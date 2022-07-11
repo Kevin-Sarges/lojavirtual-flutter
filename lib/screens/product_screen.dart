@@ -21,8 +21,9 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final ProductModel product;
   final CarouselController _carouselController = CarouselController();
+  final CartProductModel cartProduct = CartProductModel();
   late CartProvider? cartProvider;
-  late String size = '';
+  late String? size = '';
   int _current = 0;
 
   _ProductScreenState(this.product);
@@ -160,9 +161,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: ElevatedButton(
                     onPressed: size != ''
                         ? () {
-                            CartProductModel cartProduct = CartProductModel();
-
-                            cartProduct.size = size;
+                            cartProduct.size = size!;
                             cartProduct.quantity = 1;
                             cartProduct.pid = product.id!;
                             cartProduct.category = product.category!;

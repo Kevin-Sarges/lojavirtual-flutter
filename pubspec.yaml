@@ -51,6 +51,7 @@ dependencies:
   equatable: ^2.0.3
   shared_preferences: ^2.0.15
   provider: ^6.0.3
+  localstore: ^1.2.3
 
 dev_dependencies:
   flutter_test:
