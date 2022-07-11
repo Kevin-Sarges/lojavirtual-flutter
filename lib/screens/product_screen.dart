@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:k3loja/models/cart_model.dart';
 import 'package:k3loja/models/products_model.dart';
+import 'package:k3loja/providers/cart_provider.dart';
 
 class ProductScreen extends StatefulWidget {
   final ProductModel product;
@@ -19,7 +21,8 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final ProductModel product;
   final CarouselController _carouselController = CarouselController();
-  late String? size = '';
+  late CartProvider? cartProvider;
+  late String size = '';
   int _current = 0;
 
   _ProductScreenState(this.product);
@@ -155,7 +158,18 @@ class _ProductScreenState extends State<ProductScreen> {
                 SizedBox(
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: size != '' ? () {} : null,
+                    onPressed: size != ''
+                        ? () {
+                            CartProductModel cartProduct = CartProductModel();
+
+                            cartProduct.size = size;
+                            cartProduct.quantity = 1;
+                            cartProduct.pid = product.id!;
+                            cartProduct.category = product.category!;
+
+                            cartProvider!.addCartItem(cartProduct);
+                          }
+                        : null,
                     child: const Text(
                       'Adicionar ao Carrinho',
                       style: TextStyle(fontSize: 18),
