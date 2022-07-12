@@ -21,9 +21,8 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final ProductModel product;
   final CarouselController _carouselController = CarouselController();
-  final CartProductModel cartProduct = CartProductModel();
-  late CartProvider? cartProvider;
-  late String? size = '';
+  CartProvider? cartProvider;
+  String? size;
   int _current = 0;
 
   _ProductScreenState(this.product);
@@ -132,7 +131,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                     children: product.sizes!.map((e) {
                       return GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
                             size = e;
                           });
@@ -144,7 +143,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               Radius.circular(4),
                             ),
                             border: Border.all(
-                              color: e == size ? primaryColor : Colors.grey,
+                              color: e != size ? Colors.grey : primaryColor,
                               width: 3,
                             ),
                           ),
@@ -159,14 +158,20 @@ class _ProductScreenState extends State<ProductScreen> {
                 SizedBox(
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: size != ''
+                    onPressed: size != null
                         ? () {
+                            CartProductModel cartProduct = CartProductModel();
+
                             cartProduct.size = size!;
                             cartProduct.quantity = 1;
                             cartProduct.pid = product.id!;
                             cartProduct.category = product.category!;
 
-                            cartProvider!.addCartItem(cartProduct);
+                            cartProvider?.addCartItem(cartProduct);
+
+                            print(cartProduct.size);
+                            print(cartProduct.pid);
+                            print(cartProduct.quantity);
                           }
                         : null,
                     child: const Text(
