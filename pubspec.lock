@@ -324,13 +324,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  localstore:
+  localstorage:
     dependency: "direct main"
     description:
-      name: localstore
+      name: localstorage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.3"
+    version: "4.0.0+1"
   matcher:
     dependency: transitive
     description:

@@ -1,10 +1,11 @@
-// ignore_for_file: no_logic_in_create_state
+// ignore_for_file: no_logic_in_create_state, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:k3loja/models/cart_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:k3loja/models/products_model.dart';
 import 'package:k3loja/providers/cart_provider.dart';
+import 'package:localstorage/localstorage.dart';
 
 class ProductScreen extends StatefulWidget {
   final ProductModel product;
@@ -21,8 +22,12 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final ProductModel product;
   final CarouselController _carouselController = CarouselController();
-  CartProvider? cartProvider;
+  final CartProvider cartProvider = CartProvider(
+    storage: LocalStorage('cart_products'),
+  );
+
   String? size;
+  int quantity = 0;
   int _current = 0;
 
   _ProductScreenState(this.product);
@@ -154,24 +159,71 @@ class _ProductScreenState extends State<ProductScreen> {
                     }).toList(),
                   ),
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text(
+                  'Escolha a quantidade que deseja: ',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: quantity > 0
+                          ? () {
+                              setState(() {
+                                quantity--;
+                              });
+                            }
+                          : null,
+                      icon: const Icon(
+                        Icons.remove,
+                      ),
+                      color: Colors.red[600],
+                    ),
+                    Text(
+                      '$quantity',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          quantity++;
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.add,
+                      ),
+                      color: primaryColor,
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: size != null
+                    onPressed: quantity > 0
                         ? () {
-                            CartProductModel cartProduct = CartProductModel();
+                            cartProvider.addProductCart(
+                              product.id!,
+                              quantity,
+                              size!,
+                              product.price!,
+                              product.images![1],
+                            );
 
-                            cartProduct.size = size!;
-                            cartProduct.quantity = 1;
-                            cartProduct.pid = product.id!;
-                            cartProduct.category = product.category!;
-
-                            cartProvider?.addCartItem(cartProduct);
-
-                            print(cartProduct.size);
-                            print(cartProduct.pid);
-                            print(cartProduct.quantity);
+                            cartProvider.getItemsCart();
+                            Fluttertoast.showToast(
+                              msg: 'Adcionado ao carrion !!',
+                            );
                           }
                         : null,
                     child: const Text(

@@ -1,33 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:k3loja/models/products_model.dart';
-
 class CartProductModel {
-  late String cid;
-  late String category;
   late String pid;
   late int quantity;
   late String size;
-  late ProductModel productModel;
+  late double price;
+  late String image;
 
-  CartProductModel();
+  CartProductModel({
+    required this.pid,
+    required this.quantity,
+    required this.size,
+    required this.price,
+    required this.image,
+  });
 
-  CartProductModel.formDocument(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+  toJSONEncodable() {
+    Map<String, dynamic> data = {};
 
-    cid = document.id;
-    category = data['category'] ?? '';
-    pid = data['pid'] ?? '';
-    quantity = data['quantity'] ?? 0;
-    size = data['size'] ?? '';
-  }
+    data['pid'] = pid;
+    data['quantity'] = quantity;
+    data['size'] = size;
+    data['price'] = price;
+    data['image'] = image;
 
-  Map<String, dynamic> toMap() {
-    return {
-      "category": category,
-      "pid": pid,
-      "quantity": quantity,
-      "size": size,
-      "product": productModel.toResumeMap(),
-    };
+    return data;
   }
 }

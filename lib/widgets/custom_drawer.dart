@@ -25,8 +25,8 @@ class CustomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final String nameUser =
-        authProvider.googleSignIn.currentUser!.displayName.toString();
+    final String? nameUser =
+        authProvider.googleSignIn.currentUser?.displayName.toString();
 
     return Drawer(
       child: Stack(
@@ -66,7 +66,7 @@ class CustomeDrawer extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            nameUser,
+                            nameUser!,
                             style: const TextStyle(
                               color: Color(0xFF047D8D),
                               fontSize: 16,

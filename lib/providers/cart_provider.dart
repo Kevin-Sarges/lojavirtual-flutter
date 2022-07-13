@@ -1,38 +1,56 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:k3loja/models/cart_model.dart';
 
 class CartProvider extends ChangeNotifier {
-  User? firebaseUser;
-  List<CartProductModel> products = [];
+  final LocalStorage storage;
+  List<CartProductModel> itemsCart = [];
 
-  CartProvider({this.firebaseUser});
+  CartProvider({required this.storage});
 
-  void addCartItem(CartProductModel cartProduct) {
-    products.add(cartProduct);
+  toJSONEncodable() {
+    return itemsCart.map((e) {
+      return e.toJSONEncodable();
+    }).toList();
+  }
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(firebaseUser!.uid)
-        .collection('cart')
-        .add(cartProduct.toMap())
-        .then((doc) {
-      cartProduct.cid = doc.id;
-    });
+  saveToStorage() {
+    storage.setItem('items', toJSONEncodable());
+  }
 
+  addProductCart(
+    String pid,
+    int quantity,
+    String size,
+    double price,
+    String image,
+  ) {
+    final product = CartProductModel(
+      pid: pid,
+      quantity: quantity,
+      size: size,
+      price: price,
+      image: image,
+    );
+
+    itemsCart.add(product);
+    saveToStorage();
     notifyListeners();
   }
 
-  void removeCartItem(CartProductModel cartProduct) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(firebaseUser!.uid)
-        .collection('cart')
-        .doc(cartProduct.cid)
-        .delete();
+  getItemsCart() {
+    List product = storage.getItem('items');
 
-    products.remove(cartProduct);
-    notifyListeners();
+    print(product.toList());
+
+    return product;
+  }
+
+  clearCart() async {
+    await storage.clear();
+
+    itemsCart = storage.getItem('items') ?? [];
   }
 }

@@ -2,6 +2,7 @@
 
 import 'package:k3loja/providers/cart_provider.dart';
 import 'package:k3loja/screens/login_screen.dart';
+import 'package:localstorage/localstorage.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,9 +44,9 @@ class MyApp extends StatelessWidget {
             preferences: preferences,
           ),
         ),
-        ChangeNotifierProvider<CartProvider>(
+        Provider<CartProvider>(
           create: (_) => CartProvider(
-            firebaseUser: firebaseUser,
+            storage: LocalStorage('cart_products'),
           ),
         )
       ],
