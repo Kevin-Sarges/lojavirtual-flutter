@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:k3loja/models/cart_model.dart';
+import 'package:k3loja/providers/cart_provider.dart';
+import 'package:localstorage/localstorage.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -8,8 +11,13 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final SizedBox _sizedHeight = const SizedBox(height: 2);
+  final SizedBox _sizedHeight = const SizedBox(height: 10);
   final SizedBox _sizedWidth = const SizedBox(width: 20);
+  final LocalStorage storage = LocalStorage('cart_products');
+  final CartProvider list = CartProvider(
+    storage: LocalStorage('cart_products'),
+  );
+  bool initialized = false;
 
   @override
   Widget build(BuildContext context) {
@@ -18,87 +26,120 @@ class _CartScreenState extends State<CartScreen> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        ListView(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.network(
-                  'https://a1.vnda.com.br/950x/bolovo/2021/03/12/17_3_3_323_camisetapretabasicaII.jpg?v=1620159237',
-                  fit: BoxFit.cover,
-                  scale: 6,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        FutureBuilder(
+          future: storage.ready,
+          builder: (context, snapshot) {
+            if (snapshot.data == null) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (!initialized) {
+              var item = storage.getItem('items');
+
+              if (item != null) {
+                list.itemsCart = List<CartProductModel>.from(
+                  (item as List).map(
+                    (e) => CartProductModel(
+                      pid: e['pid'],
+                      quantity: e['quantity'],
+                      size: e['size'],
+                      price: e['price'],
+                      image: e['image'],
+                    ),
+                  ),
+                );
+              }
+
+              print(item);
+              initialized = true;
+            }
+
+            List<Widget> listProductCart = list.itemsCart.map(
+              (e) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Camiseta',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        e.image,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    const Text(
-                      'Tamanho: G',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    _sizedHeight,
-                    Row(
+                    const Spacer(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'R\$ 19.99',
+                        const Text(
+                          'Camiseta',
                           style: TextStyle(
-                            color: primaryColor,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
                           ),
                         ),
-                        _sizedWidth,
+                        Text(
+                          'Tamanho: ${e.size}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        _sizedHeight,
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.remove),
-                            ),
-                            const Text(
-                              ' 0 ',
+                            Text(
+                              'R\$ ${e.price}',
                               style: TextStyle(
+                                color: primaryColor,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.add),
+                            _sizedWidth,
+                            Text(
+                              'Quantidade: ${e.quantity}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
+                            _sizedHeight,
                           ],
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              list.deleteItemsCart(e.pid);
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: primaryColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                          ),
+                          child: Row(
+                            children: [
+                              const Text('Remover do Carrinho'),
+                              _sizedWidth,
+                              const Icon(Icons.remove_shopping_cart),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
-                      ),
-                      child: Row(
-                        children: [
-                          const Text('Remover do Carrinho'),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.remove_shopping_cart),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
-                ),
-              ],
-            ),
-          ],
+                );
+              },
+            ).toList();
+
+            return ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              children: listProductCart,
+            );
+          },
         ),
         Positioned(
           height: 100,
@@ -108,7 +149,7 @@ class _CartScreenState extends State<CartScreen> {
           child: Container(
             color: Colors.white,
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +176,11 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          list.clearCart();
+                        });
+                      },
                       child: const Text(
                         'Limpar carriho',
                         style: TextStyle(

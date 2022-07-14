@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:k3loja/models/products_model.dart';
 import 'package:k3loja/providers/cart_provider.dart';
+import 'package:k3loja/screens/home_screen.dart';
 import 'package:localstorage/localstorage.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -220,9 +221,14 @@ class _ProductScreenState extends State<ProductScreen> {
                               product.images![1],
                             );
 
-                            cartProvider.getItemsCart();
                             Fluttertoast.showToast(
                               msg: 'Adcionado ao carrion !!',
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ),
                             );
                           }
                         : null,

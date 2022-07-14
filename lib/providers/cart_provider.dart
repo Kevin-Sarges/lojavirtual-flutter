@@ -11,9 +11,11 @@ class CartProvider extends ChangeNotifier {
   CartProvider({required this.storage});
 
   toJSONEncodable() {
-    return itemsCart.map((e) {
+    List listProduct = itemsCart.map((e) {
       return e.toJSONEncodable();
     }).toList();
+
+    return listProduct;
   }
 
   saveToStorage() {
@@ -40,12 +42,8 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getItemsCart() {
-    List product = storage.getItem('items');
-
-    print(product.toList());
-
-    return product;
+  deleteItemsCart(String pid) async {
+    await storage.deleteItem(pid);
   }
 
   clearCart() async {
