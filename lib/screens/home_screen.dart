@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:k3loja/screens/cart_screen.dart';
 
 import '../tabs/home_tabs.dart';
 import '../tabs/products_tab.dart';
@@ -30,8 +31,14 @@ class HomeScreen extends StatelessWidget {
           drawer: CustomeDrawer(pageController: _pageController),
           body: ProductsTab(),
         ),
-        Container(
-          color: Colors.green,
+        Scaffold(
+          appBar: AppBar(
+            title: const Text('Carrinho'),
+            centerTitle: true,
+            backgroundColor: primaryColor,
+          ),
+          drawer: CustomeDrawer(pageController: _pageController),
+          body: const CartScreen(),
         ),
         Container(
           color: Colors.blue,

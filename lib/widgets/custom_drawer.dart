@@ -93,8 +93,8 @@ class CustomeDrawer extends StatelessWidget {
                 page: 1,
               ),
               DrawerTile(
-                icon: Icons.location_on,
-                text: 'Lojas',
+                icon: Icons.shopping_cart,
+                text: 'Carrinho',
                 controller: pageController,
                 page: 2,
               ),
