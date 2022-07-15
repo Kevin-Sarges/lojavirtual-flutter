@@ -66,7 +66,7 @@ class CustomeDrawer extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            nameUser!,
+                            nameUser ?? 'User',
                             style: const TextStyle(
                               color: Color(0xFF047D8D),
                               fontSize: 16,
