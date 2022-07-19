@@ -31,7 +31,11 @@ class CartProvider extends Model {
   }
 
   void onDelete(CartProductModel product) {
-    return notifyListeners();
+    deletedProduct = product;
+    deleteProductIndex = productsCart.indexOf(product);
+
+    productsCart.remove(product);
+    saveProductCart(productsCart);
   }
 
   // antes
