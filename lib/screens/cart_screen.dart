@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:k3loja/models/cart_model.dart';
 import 'package:k3loja/providers/cart_provider.dart';
+import 'package:k3loja/widgets/cart_item.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -14,10 +16,20 @@ class _CartScreenState extends State<CartScreen> {
   final SizedBox _sizedHeight = const SizedBox(height: 10);
   final SizedBox _sizedWidth = const SizedBox(width: 20);
   final LocalStorage storage = LocalStorage('cart_products');
-  final CartProvider list = CartProvider(
-    storage: LocalStorage('cart_products'),
-  );
+
   bool initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final cartProvider = ScopedModel.of<CartProvider>(context);
+
+    cartProvider.getProductListCart().then((value) {
+      setState(() {
+        cartProvider.productsCart = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,118 +38,124 @@ class _CartScreenState extends State<CartScreen> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        FutureBuilder(
-          future: storage.ready,
-          builder: (context, snapshot) {
-            if (snapshot.data == null) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        ScopedModelDescendant<CartProvider>(
+          // future: storage.ready,
+          builder: (context, index, model) {
+            // if (snapshot.data == null) {
+            //   return const Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
 
-            if (!initialized) {
-              var item = storage.getItem('items');
+            // if (!initialized) {
+            //   var item = storage.getItem('items');
 
-              if (item != null) {
-                list.itemsCart = List<CartProductModel>.from(
-                  (item as List).map(
-                    (e) => CartProductModel(
-                      pid: e['pid'],
-                      quantity: e['quantity'],
-                      size: e['size'],
-                      price: e['price'],
-                      image: e['image'],
-                    ),
-                  ),
-                );
-              }
+            //   if (item != null) {
+            //     list.itemsCart = List<CartProductModel>.from(
+            //       (item as List).map(
+            //         (e) => CartProductModel(
+            //           pid: e['pid'],
+            //           quantity: e['quantity'],
+            //           size: e['size'],
+            //           price: e['price'],
+            //           image: e['image'],
+            //         ),
+            //       ),
+            //     );
+            //   }
 
-              print(item);
-              initialized = true;
-            }
+            //   print(item);
+            //   initialized = true;
+            // }
 
-            List<Widget> listProductCart = list.itemsCart.map(
-              (e) {
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: Image.network(
-                        e.image,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const Spacer(),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Camiseta',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Tamanho: ${e.size}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        _sizedHeight,
-                        Row(
-                          children: [
-                            Text(
-                              'R\$ ${e.price}',
-                              style: TextStyle(
-                                color: primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            _sizedWidth,
-                            Text(
-                              'Quantidade: ${e.quantity}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            _sizedHeight,
-                          ],
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              list.deleteItemsCart(e.pid);
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: primaryColor,
-                            padding: const EdgeInsets.symmetric(horizontal: 18),
-                          ),
-                          child: Row(
-                            children: [
-                              const Text('Remover do Carrinho'),
-                              _sizedWidth,
-                              const Icon(Icons.remove_shopping_cart),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ).toList();
+            // List<Widget> listProductCart = list.itemsCart.map(
+            //   (e) {
+            //     return Row(
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         SizedBox(
+            //           width: 120,
+            //           height: 120,
+            //           child: Image.network(
+            //             e.image,
+            //             fit: BoxFit.cover,
+            //           ),
+            //         ),
+            //         const Spacer(),
+            //         Column(
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const Text(
+            //               'Camiseta',
+            //               style: TextStyle(
+            //                 fontSize: 20,
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+            //             Text(
+            //               'Tamanho: ${e.size}',
+            //               style: const TextStyle(
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+            //             _sizedHeight,
+            //             Row(
+            //               children: [
+            //                 Text(
+            //                   'R\$ ${e.price}',
+            //                   style: TextStyle(
+            //                     color: primaryColor,
+            //                     fontWeight: FontWeight.bold,
+            //                     fontSize: 18,
+            //                   ),
+            //                 ),
+            //                 _sizedWidth,
+            //                 Text(
+            //                   'Quantidade: ${e.quantity}',
+            //                   style: const TextStyle(
+            //                     fontWeight: FontWeight.bold,
+            //                     fontSize: 18,
+            //                   ),
+            //                 ),
+            //                 _sizedHeight,
+            //               ],
+            //             ),
+            //             ElevatedButton(
+            //               onPressed: () {
+            //                 setState(() {
+            //                   list.deleteItemsCart(e.pid);
+            //                 });
+            //               },
+            //               style: ElevatedButton.styleFrom(
+            //                 primary: primaryColor,
+            //                 padding: const EdgeInsets.symmetric(horizontal: 18),
+            //               ),
+            //               child: Row(
+            //                 children: [
+            //                   const Text('Remover do Carrinho'),
+            //                   _sizedWidth,
+            //                   const Icon(Icons.remove_shopping_cart),
+            //                 ],
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ],
+            //     );
+            //   },
+            // ).toList();
 
             return ListView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              children: listProductCart,
+              children: [
+                for (CartProductModel product in model.productsCart)
+                  CartItem(
+                    product: product,
+                    onDelete: model.onDelete,
+                  )
+              ],
             );
           },
         ),
@@ -176,11 +194,7 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          list.clearCart();
-                        });
-                      },
+                      onPressed: () {},
                       child: const Text(
                         'Limpar carriho',
                         style: TextStyle(
@@ -212,4 +226,9 @@ class _CartScreenState extends State<CartScreen> {
       ],
     );
   }
+
+  // void deleteAllProductsCart() {
+  //   productsCart.clear();
+  //   saveProductCart(productsCart);
+  // }
 }
