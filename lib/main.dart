@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:k3loja/providers/cart_provider.dart';
-import 'package:k3loja/screens/login_screen.dart';
+import 'package:k3loja/screens/splash_screen.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
             primaryColor: const Color.fromARGB(255, 4, 125, 141),
           ),
           debugShowCheckedModeBanner: false,
-          home: const LoginScreen(),
+          home: const SplashScreen(),
         ),
       ),
     );

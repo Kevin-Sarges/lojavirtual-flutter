@@ -22,8 +22,8 @@ class _HomeTabState extends State<HomeTab> {
     decoration: const BoxDecoration(
       gradient: LinearGradient(
         colors: [
-          Color.fromARGB(255, 211, 118, 130),
-          Color.fromARGB(255, 211, 181, 168),
+          Color(0xFF048D5C),
+          Color(0xFF047D8D),
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,

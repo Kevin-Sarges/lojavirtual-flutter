@@ -33,7 +33,9 @@ class _CartScreenState extends State<CartScreen> {
                       child: CircularProgressIndicator(),
                     );
                   default:
-                    if (snapshot.hasError) {
+                    var item = model.storage?.getItem('cart_item');
+
+                    if (item != null) {
                       return ListView(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
@@ -48,18 +50,8 @@ class _CartScreenState extends State<CartScreen> {
                         ],
                       );
                     } else {
-                      return ListView(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 20,
-                        ),
-                        children: [
-                          for (CartProductModel product in model.productsCart)
-                            CartItem(
-                              product: product,
-                              onDelete: model.onDelete,
-                            )
-                        ],
+                      return const Center(
+                        child: Text('Sem produto no carrnho'),
                       );
                     }
                 }
