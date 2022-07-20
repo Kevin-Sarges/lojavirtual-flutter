@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:k3loja/providers/cart_provider.dart';
 import 'package:k3loja/screens/login_screen.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,25 +34,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthProvider>(
-          create: (_) => AuthProvider(
-            googleSignIn: GoogleSignIn(),
-            firebaseAuth: FirebaseAuth.instance,
-            firebaseFirestore: firebaseFirestore,
-            preferences: preferences,
+    return ScopedModel<CartProvider>(
+      model: CartProvider(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AuthProvider>(
+            create: (_) => AuthProvider(
+              googleSignIn: GoogleSignIn(),
+              firebaseAuth: FirebaseAuth.instance,
+              firebaseFirestore: firebaseFirestore,
+              preferences: preferences,
+            ),
           ),
+        ],
+        child: MaterialApp(
+          title: 'Loja demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            primaryColor: const Color.fromARGB(255, 4, 125, 141),
+          ),
+          debugShowCheckedModeBanner: false,
+          home: const LoginScreen(),
         ),
-      ],
-      child: MaterialApp(
-        title: 'Loja demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: const Color.fromARGB(255, 4, 125, 141),
-        ),
-        debugShowCheckedModeBanner: false,
-        home: const LoginScreen(),
       ),
     );
   }

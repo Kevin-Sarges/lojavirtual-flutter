@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:k3loja/models/cart_model.dart';
 import 'package:k3loja/models/products_model.dart';
 import 'package:k3loja/providers/cart_provider.dart';
 import 'package:k3loja/screens/home_screen.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductScreen extends StatefulWidget {
   final ProductModel product;
@@ -23,9 +24,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final ProductModel product;
   final CarouselController _carouselController = CarouselController();
-  final CartProvider cartProvider = CartProvider(
-    storage: LocalStorage('cart_products'),
-  );
+  final CartProvider provider = CartProvider();
 
   String? size;
   int quantity = 0;
@@ -210,33 +209,47 @@ class _ProductScreenState extends State<ProductScreen> {
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 40,
-                  child: ElevatedButton(
-                    onPressed: quantity > 0
-                        ? () {
-                            cartProvider.addProductCart(
-                              product.id!,
-                              quantity,
-                              size!,
-                              product.price!,
-                              product.images![1],
-                            );
+                  child: ScopedModelDescendant<CartProvider>(
+                    builder: (context, child, model) {
+                      return ElevatedButton(
+                        onPressed: quantity > 0
+                            ? () {
+                                var cartItem = model.productsCart;
 
-                            Fluttertoast.showToast(
-                              msg: 'Adcionado ao carrion !!',
-                            );
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
-                              ),
-                            );
-                          }
-                        : null,
-                    child: const Text(
-                      'Adicionar ao Carrinho',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    style: ElevatedButton.styleFrom(primary: primaryColor),
+                                CartProductModel newProduct = CartProductModel(
+                                  pid: product.id!,
+                                  quantity: quantity,
+                                  size: size!,
+                                  price: product.price!,
+                                  image: product.images![1],
+                                );
+
+                                model.totalPrice =
+                                    (newProduct.price * quantity) +
+                                        model.totalPrice;
+
+                                cartItem.add(newProduct);
+
+                                model.saveProductCart(cartItem);
+
+                                Fluttertoast.showToast(
+                                  msg: 'Adcionado ao carrion !!',
+                                );
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeScreen(),
+                                  ),
+                                );
+                              }
+                            : null,
+                        child: const Text(
+                          'Adicionar ao Carrinho',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        style: ElevatedButton.styleFrom(primary: primaryColor),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(
