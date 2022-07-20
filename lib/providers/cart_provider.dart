@@ -47,6 +47,8 @@ class CartProvider extends Model {
   void clearCart() async {
     await storage?.clear();
 
+    productsCart.clear();
     productsCart = storage?.getItem('items') ?? [];
+    saveProductCart(productsCart);
   }
 }

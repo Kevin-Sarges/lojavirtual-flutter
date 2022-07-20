@@ -103,7 +103,9 @@ class _CartScreenState extends State<CartScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            model.clearCart();
+                          },
                           child: const Text(
                             'Limpar carriho',
                             style: TextStyle(
