@@ -224,10 +224,13 @@ class _ProductScreenState extends State<ProductScreen> {
                                   image: product.images![1],
                                 );
 
+                                model.totalPrice =
+                                    (newProduct.price * quantity) +
+                                        model.totalPrice;
+
                                 cartItem.add(newProduct);
 
                                 model.saveProductCart(cartItem);
-                                print(cartItem);
 
                                 Fluttertoast.showToast(
                                   msg: 'Adcionado ao carrion !!',

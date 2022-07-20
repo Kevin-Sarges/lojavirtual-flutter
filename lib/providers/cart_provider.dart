@@ -3,16 +3,19 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:k3loja/models/cart_model.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const cartListKey = 'cart_products';
+const cartListKey = 'cart_item';
 
 class CartProvider extends Model {
   // novo
+  LocalStorage? storage = LocalStorage('cart_products');
   SharedPreferences? sharedPreferences;
   int? deleteProductIndex;
   CartProductModel? deletedProduct;
+  double totalPrice = 0;
   List<CartProductModel> productsCart = [];
 
   Future<List<CartProductModel>> getProductListCart() async {
@@ -27,6 +30,7 @@ class CartProvider extends Model {
     final String jsonString = json.encode(items);
 
     sharedPreferences?.setString(cartListKey, jsonString);
+    storage?.setItem(cartListKey, jsonString);
     notifyListeners();
   }
 
@@ -34,53 +38,15 @@ class CartProvider extends Model {
     deletedProduct = product;
     deleteProductIndex = productsCart.indexOf(product);
 
+    totalPrice = totalPrice - (product.quantity * product.price);
+
     productsCart.remove(product);
     saveProductCart(productsCart);
   }
 
-  // antes
-  // late LocalStorage storage;
-  // List<CartProductModel> itemsCart = [];
+  void clearCart() async {
+    await storage?.clear();
 
-  // toJSONEncodable() {
-  //   List listProduct = itemsCart.map((e) {
-  //     return e.toJSONEncodable();
-  //   }).toList();
-
-  //   return listProduct;
-  // }
-
-  // saveToStorage() {
-  //   storage.setItem('items', toJSONEncodable());
-  // }
-
-  // addProductCart(
-  //   String pid,
-  //   int quantity,
-  //   String size,
-  //   double price,
-  //   String image,
-  // ) {
-  //   final product = CartProductModel(
-  //     pid: pid,
-  //     quantity: quantity,
-  //     size: size,
-  //     price: price,
-  //     image: image,
-  //   );
-
-  //   itemsCart.add(product);
-  //   saveToStorage();
-  //   notifyListeners();
-  // }
-
-  // deleteItemsCart(String pid) async {
-  //   await storage.deleteItem(pid);
-  // }
-
-  // clearCart() async {
-  //   await storage.clear();
-
-  //   itemsCart = storage.getItem('items') ?? [];
-  // }
+    productsCart = storage?.getItem('items') ?? [];
+  }
 }
